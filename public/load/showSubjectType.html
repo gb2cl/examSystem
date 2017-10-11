@@ -41,17 +41,15 @@
            <div class="Catalog_rightnei">
                 <div class="Catalogtitwo">题号：25544&nbsp;&nbsp;题型：还是得&nbsp;&nbsp;难度：订餐&nbsp;&nbsp;上传人：女性司机&nbsp;&nbsp;来源：才能使得&nbsp;&nbsp;上传时间:220255&nbsp;&nbsp;组卷次数：<em>0</em></div>
                 <div class="Catalogcontent">
-                    <div class="Catalogcontentup">题型</div>
-    
+                    <div class="Catalogcontentup">题型</div>   
                     <div class="Catalogcontentdown">
-                    <a href="#" id="pass">审核通过</a>
-                    <a href="#">加入试卷</a>
-                    <a href="#" id="nopass">审核不通过</a>
-                    <a href="#">删除题目</a>
+                      <a href="#" id="pass">审核通过</a>
+                      <a href="#" style="display:none;">加入试卷</a>
+                      <a href="#" id="nopass">审核不通过</a>
+                      <a href="#">删除题目</a>
                     </div>
                 </div>
            </div>
-
           </div>
       </div>
   </div>
@@ -134,7 +132,7 @@
 <script type="text/javascript">
   $(function(){
     var arr = new Array();
-    //当点击选项时变颜色
+    //事件代理，当点击选项时变颜色
     $(".tablea").off("click");
     $(".tablea").on("click","a",function(){
       $(this).addClass("active3").siblings().removeClass("active3");
@@ -146,26 +144,63 @@
 
         //将选中的四个id发送到后台
         $.getJSON("exam/manager/getAllSubjects?department_id="+department_id+"&subjectLevel_id="+subjectLevel_id+"&subjectType_id="+subjectType_id+"&topic_id="+topic_id,function(data){
+            // alert(data);
+            // $('.Catalogcontentup span').remove();
+            $('.Catalogcontentup').children().remove();
             data.forEach(function(item,index){
-                $('.Catalogcontentup span').remove();
-                $('.Catalogcontentup').append('<span class="span" id="'+item.id+'">'+item.stem+'</span>');
+              $('.Catalogcontentup span').remove();
+              $('.Catalogcontentup').html("题目为：");
+              console.log(item.stem);
+              $('.Catalogcontentup').append('<span class="span" id="'+item.id+'">'+item.stem+'</span>'); 
+              //显示所选题目的选项
+              var subjectId = $('.Catalogcontent').find('.span').attr('id');
+              alert(subjectId); 
+              $.getJSON("/exam/manager/getChoice?subject_id="+subjectId,function(data){
+                // console.log(data);
+                data.forEach(function(item,index){
+                  // console.log(item.id,item.content);
+                  var choiceIndex = (item.id==1)?'A':((item.id==2)?'B':(item.id==3)?'C':'D');
+                  // console.log(choiceIndex);
+                  // console.log(item.correct.data[0]);
+                  if(item.correct.data[0] == 1){
+                    $('.Catalogcontentup').append('<li style="color:red">'+choiceIndex+'.'+item.content+'</li>');
+                  } else {
+                    $('.Catalogcontentup').append('<li>'+choiceIndex+'.'+item.content+'</li>');
+                  }                   
+                });
+              });   
             })
+            // } else {
+            //   $('.Catalogcontentup span').remove();
+            //   $('.Catalogcontentup').html("所选项目目前没有题。sorry！"); 
+            // }
         });
 
+
+        // $.getJSON("/exam/manager/getChoice?subject_id="+subjectId,function(data){
+        //   console.log(data);
+        // });
+
         //点击审核改变审核状态
-        function changeState(url,checkState){
-          var subjectId = $('.Catalogcontent').find('.span').attr('id'); 
-            $.getJSON(url,{checkState:checkState,id:subjectId},function(data){
+        // alert(subjectId);
+        function changeState(checkState,subjectId){ 
+            var url = '/exam/manager/updateSubjectState?checkState='+checkState+'&id='+subjectId;
+            // alert(subjectId);
+            alert(url);
+            $.getJSON(url,function(data){
                 alert("审核成功");
             })
         }
         $('.Catalogcontentdown #pass').on('click',function(){
             var checkState = '已审核';
-            changeState('/exam/manager/updateSubjectState',checkState);
+            var subjectId = $('.Catalogcontent').find('.span').attr('id');
+            changeState(checkState,subjectId);
+            $('.Catalogcontentdown').find('a:hidden').show().siblings().hide();
         });
         $('.Catalogcontentdown #nopass').on('click',function(){
             var checkState = '未审核';
-            changeState('/exam/manager/updateSubjectState',checkState);
+            var subjectId = $('.Catalogcontent').find('.span').attr('id');
+            changeState(checkState,subjectId);
         });
     });
   })

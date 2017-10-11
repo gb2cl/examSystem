@@ -57,7 +57,6 @@ route.get('/getAllSubjects',(req,resp)=>{
 	}).catch((error)=>{
 		resp.send(error);
 	});
-
 })
 //8.更新题目审核状态
 route.get('/updateSubjectState',(req,resp)=>{
@@ -66,6 +65,13 @@ route.get('/updateSubjectState',(req,resp)=>{
 	}).catch((error)=>{
 		resp.send(error);
 	});
-
+})
+//9.显示题目选项
+route.get('/getChoice',(req,resp)=>{
+	examSystemDB.getChoice(req.query.subject_id).then((data)=>{
+		resp.send(data);
+	}).catch((error)=>{
+		resp.send(error);
+	});
 })
 module.exports = route;

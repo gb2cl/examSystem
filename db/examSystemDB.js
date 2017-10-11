@@ -38,16 +38,21 @@ module.exports = {
 	},
 	//7.通过id查询题目信息
 	getAllSubjects(department_id,subjectLevel_id,subjectType_id,topic_id){
-		var sql = "select stem from tbl_exam_subject where department_id ="+department_id+ " and subjectLevel_id ="+subjectLevel_id+ " and subjectType_id ="+subjectType_id+ " and topic_id ="+topic_id;
+		var sql = "select * from tbl_exam_subject where department_id ="+department_id+ " and subjectLevel_id ="+subjectLevel_id+ " and subjectType_id ="+subjectType_id+ " and topic_id ="+topic_id;
 		return pool.execute(sql);
 		console.log(pool.execute(sql));
 	},
+	//8.更新题目状态
 	updateSubjectState(checkState,id){
-	    // console.log(typeof checkState);
-	    // var sql = 'update tbl_exam_subject set checkState='+checkState+' where id = '+id+'';
-	    var sql = "update tbl_exam_subject set checkState='"+checkState+"' where id = "+id;
+	    var sql = "update tbl_exam_subject set checkState='"+checkState+"' where id="+id;
 	    console.log(sql);
 	    return pool.execute(sql);
+	},
+	//9.显示题目选项
+	getChoice(id){
+		var sql = "select * from tbl_exam_choice where subject_id="+id;
+		return pool.execute(sql);
+		console.log(pool.execute(sql));
 	}
 
 }
