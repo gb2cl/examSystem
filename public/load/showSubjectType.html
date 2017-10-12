@@ -29,7 +29,7 @@
        <div class="Catalog_right">
            <div class="Catalogtitle">
              总计<em>15552</em>道题&nbsp;&nbsp;提示：单击体面可显示答案和解析&nbsp;&nbsp;
-             <input type="checkbox" />
+             <input type="checkbox" id="box1"/>
              <b>显示答案和解析</b>&nbsp;&nbsp;
              <a href="#" class="Thispage">本页全部试题加入试卷</a>
              <div>
@@ -43,10 +43,10 @@
                 <div class="Catalogcontent">
                     <div class="Catalogcontentup">题型</div>   
                     <div class="Catalogcontentdown">
-                      <a href="#" id="pass">审核通过</a>
-                      <a href="#" style="display:none;">加入试卷</a>
-                      <a href="#" id="nopass">审核不通过</a>
-                      <a href="#">删除题目</a>
+                      <a href="javascript:void(0)" id="pass">审核通过</a>
+                      <a href="javascript:void(0)" style="display:none;">加入试卷</a>
+                      <a href="javascript:void(0)" id="nopass">审核不通过</a>
+                      <a href="javascript:void(0)">删除题目</a>
                     </div>
                 </div>
            </div>
@@ -74,56 +74,53 @@
         }
         $('tr:eq(1) .chose').append(a);
       });
-    });
-
-    //2.获取题目的难易程度
-    $.getJSON("exam/manager/getAllSubjectLevel",function(data){
-      var newTr = $(".divtable tr:hidden").clone().removeAttr("hidden");
-      $(".tablea").append(newTr);
-      newTr.find(".chose").html("");
-      $("tr:eq(2) td:first-child").html("题目难度");
-      data.forEach(function(item,index){
-        var a = "";
-        if(index == 0){
-          a = $("<a href='javascript:void(0)' class='active3' id="+item.id+" name="+item.name+">"+item.realName+"</a>");
-        }else{
-          a = $("<a href='javascript:void(0)' id="+item.id+" name="+item.name+">"+item.realName+"</a>");
-        }
-        $('tr:eq(2) .chose').append(a);
-      });
-    });
-
-    //3.获取所有方向
-    $.getJSON("exam/manager/getAllDepartmentes",function(data){
-      var newTr = $(".divtable tr:hidden").clone().removeAttr("hidden");
-      $(".tablea").append(newTr);
-      newTr.find(".chose").html("");
-      $("tr:eq(3) td:first-child").html("方向");
-      data.forEach(function(item,index){
-        var a = "";
-        if(index == 0){
-          a = $("<a href='javascript:void(0)' class='active3' id="+item.id+" name="+item.name+">"+item.name+"</a>");
-        } else {
-          a = $("<a href='javascript:void(0)' id="+item.id+" name="+item.name+">"+item.name+"</a>");
-        }
-        $("tr:eq(3) .chose").append(a);
-      });
-    });
-
-    //4.获取所有的知识点
-    $.getJSON("exam/manager/getAllTopics",function(data){
-      var newTr = $(".divtable tr:hidden").clone().removeAttr("hidden");
-      $(".tablea").append(newTr);
-      newTr.find(".chose").html("");
-      $("tr:eq(4) td:first-child").html("知识点");
-      data.forEach(function(item,index){
-        var a = "";
-        if(index == 0){
-          a = $("<a href='javascript:void(0)' class='active3' id="+item.id+" name="+item.name+">"+item.title+"</a>");
-        } else {
-          a = $("<a href='javascript:void(0)' id="+item.id+" name="+item.name+">"+item.title+"</a>");
-        }
-        $("tr:eq(4) .chose").append(a);
+      //2.获取题目的难易程度
+      $.getJSON("exam/manager/getAllSubjectLevel",function(data){
+        var newTr = $(".divtable tr:hidden").clone().removeAttr("hidden");
+        $(".tablea").append(newTr);
+        newTr.find(".chose").html("");
+        $("tr:eq(2) td:first-child").html("题目难度");
+        data.forEach(function(item,index){
+          var a = "";
+          if(index == 0){
+            a = $("<a href='javascript:void(0)' class='active3' id="+item.id+" name="+item.name+">"+item.realName+"</a>");
+          }else{
+            a = $("<a href='javascript:void(0)' id="+item.id+" name="+item.name+">"+item.realName+"</a>");
+          }
+          $('tr:eq(2) .chose').append(a);
+        });
+        //3.获取所有方向
+        $.getJSON("exam/manager/getAllDepartmentes",function(data){
+          var newTr = $(".divtable tr:hidden").clone().removeAttr("hidden");
+          $(".tablea").append(newTr);
+          newTr.find(".chose").html("");
+          $("tr:eq(3) td:first-child").html("方向");
+          data.forEach(function(item,index){
+            var a = "";
+            if(index == 0){
+              a = $("<a href='javascript:void(0)' class='active3' id="+item.id+" name="+item.name+">"+item.name+"</a>");
+            } else {
+              a = $("<a href='javascript:void(0)' id="+item.id+" name="+item.name+">"+item.name+"</a>");
+            }
+            $("tr:eq(3) .chose").append(a);
+          });
+          //4.获取所有的知识点
+          $.getJSON("exam/manager/getAllTopics",function(data){
+            var newTr = $(".divtable tr:hidden").clone().removeAttr("hidden");
+            $(".tablea").append(newTr);
+            newTr.find(".chose").html("");
+            $("tr:eq(4) td:first-child").html("知识点");
+            data.forEach(function(item,index){
+              var a = "";
+              if(index == 0){
+                a = $("<a href='javascript:void(0)' class='active3' id="+item.id+" name="+item.name+">"+item.title+"</a>");
+              } else {
+                a = $("<a href='javascript:void(0)' id="+item.id+" name="+item.name+">"+item.title+"</a>");
+              }
+              $("tr:eq(4) .chose").append(a);
+            });
+          });
+        });
       });
     });
 
@@ -151,8 +148,10 @@
               $('.Catalogcontentup span').remove();
               $('.Catalogcontentup').html("题目为：");
               console.log(item.stem);
+              console.log(item.id);
               $('.Catalogcontentup').append('<span class="span" id="'+item.id+'">'+item.stem+'</span>'); 
               //显示所选题目的选项
+              // console.log(666);
               var subjectId = $('.Catalogcontent').find('.span').attr('id');
               alert(subjectId); 
               $.getJSON("/exam/manager/getChoice?subject_id="+subjectId,function(data){
@@ -175,6 +174,9 @@
             //   $('.Catalogcontentup').html("所选项目目前没有题。sorry！"); 
             // }
         });
+        // $('.Catalogtitle').find("input[type=checkbox]").on('click',function(){
+        //   alert('chose already');
+        // });
 
 
         // $.getJSON("/exam/manager/getChoice?subject_id="+subjectId,function(data){
@@ -188,14 +190,18 @@
             // alert(subjectId);
             alert(url);
             $.getJSON(url,function(data){
+                // console.log(data);
                 alert("审核成功");
             })
         }
+        $('.Catalogcontentdown #pass').off();
         $('.Catalogcontentdown #pass').on('click',function(){
             var checkState = '已审核';
             var subjectId = $('.Catalogcontent').find('.span').attr('id');
             changeState(checkState,subjectId);
+            // console.log($('.Catalogcontentdown').find('a:hidden'));
             $('.Catalogcontentdown').find('a:hidden').show().siblings().hide();
+
         });
         $('.Catalogcontentdown #nopass').on('click',function(){
             var checkState = '未审核';
@@ -204,4 +210,10 @@
         });
     });
   })
+</script>
+<script type="text/javascript">
+  $('.icon_add').on('click',function(){
+      $(".right").load("load/addSubject.html");
+      // alert()
+  });
 </script>
