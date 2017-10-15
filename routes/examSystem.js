@@ -43,8 +43,8 @@ route.get('/getDepartmentTopics',(req,resp)=>{
 	});
 })
 //6.保存题目信息
-route.post('/saveSubject',(req,resp)=>{
-	examSystemDB.saveSubject(req.query.id).then((data)=>{
+route.get('/allSubject',(req,resp)=>{
+	examSystemDB.allSubject(req.query.id).then((data)=>{
 		resp.send(data);
 	}).catch((error)=>{
 		resp.send(error);
@@ -74,4 +74,42 @@ route.get('/getChoice',(req,resp)=>{
 		resp.send(error);
 	});
 })
+//10.通过id删除题目
+route.get('/deleteSubject',(req,resp)=>{
+	examSystemDB.deleteSubject(req.query.id).then((data)=>{
+		resp.send(data);
+	}).catch((error)=>{
+		resp.send(error);
+	});
+});
+// 11.添加题目
+route.get('/addSubject',(req,resp)=>{
+	var typeId = req.query.subjectType_id;
+	var	departmentId = req.query.department_id;
+	var	levelId = req.query.subjectLevel_id;
+	var	topicId = req.query.topic_id;
+	var	stem = req.query.stem;
+	var	analysis = req.query.analysis;
+	var	answer = req.query.answer;	
+	examSystemDB.addSubject(analysis,answer,stem,departmentId,levelId,typeId,topicId).then((data)=>{
+		resp.send(data);
+	}).catch((error)=>{
+		resp.send(error);
+	});
+});
+// 12.添加答案
+route.post('/addChoice',(req,resp)=>{
+	// var content = req.query.content;
+	// var correct = req.query.correct;
+	// var subjectId = req.query.subject_id;
+	var content = req.body['content[]'];
+	var correct = req.body['correct[]'];
+	var subjectId = req.body['subjectId'];
+	examDB.addChoice(content,correct,subjectId).then((data)=>{
+	// examSystemDB.addChoice(content,correct,subjectId).then((data)=>{
+		resp.send(data);
+	}).catch((error)=>{
+		resp.send(error);
+	});
+});
 module.exports = route;

@@ -11,7 +11,7 @@
     <div class="divtable">
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tablea">
         <tr hidden>
-          <td align="center">年份</td>
+          <td align="center">题型</td>
           <td align="left">
               <div class="chose">
                   <a href="#" class="active3">全部</a>
@@ -46,7 +46,7 @@
                       <a href="javascript:void(0)" id="pass">审核通过</a>
                       <a href="javascript:void(0)" style="display:none;">加入试卷</a>
                       <a href="javascript:void(0)" id="nopass">审核不通过</a>
-                      <a href="javascript:void(0)">删除题目</a>
+                      <a href="javascript:void(0)" id="del">删除题目</a>
                     </div>
                 </div>
            </div>
@@ -161,6 +161,7 @@
                   var choiceIndex = (item.id==1)?'A':((item.id==2)?'B':(item.id==3)?'C':'D');
                   // console.log(choiceIndex);
                   // console.log(item.correct.data[0]);
+                  console.log(item,index);
                   if(item.correct.data[0] == 1){
                     $('.Catalogcontentup').append('<li style="color:red">'+choiceIndex+'.'+item.content+'</li>');
                   } else {

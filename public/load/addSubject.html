@@ -13,12 +13,12 @@
 	                       	</select>
 	                     </b>
 	                     <b>
-	                     	方向：<select name="department">
+	                     	难度：<select name="department">
 	                     		
 	                       	</select>
 	                     </b>
 	                     <b>
-	                     	难度：<select name="level">
+	                     	方向：<select name="level">
 	                     		
 	                       	</select>
 	                     </b>
@@ -26,7 +26,7 @@
 	                     	知识点：<select name="topic">
 	                        </select>
 	                     </b> 
-	                 </div>              
+	                 </div>             
 	             </div>
 	        </div>
 	        <div class="Problem">
@@ -46,7 +46,7 @@
 	                     <div class="Answerpart_left">
 	                         <p>A</p><span>
 	                         <input type="radio" name="answer"/></span>
-	                         <span style="display: none;"><input type="checkbox" name="answer"/></span>
+	                         <!-- <span style="display: none;"><input type="checkbox" name="answer"/></span> -->
 	                     </div>
 	                     <div class="Answerpart_right">
 	                     	<textarea name="choiceContent"></textarea>   
@@ -58,7 +58,7 @@
 	                        <p>B</p><span>
 	                        <input type="radio" name="answer"/>
 	                        </span>
-	                        <span style="display: none;"><input type="checkbox" name="answer"/></span>
+	                        <!-- <span style="display: none;"><input type="checkbox" name="answer"/></span> -->
 	                    </div>
 	                    <div class="Answerpart_right">
 	                    	<textarea name="choiceContent"></textarea>  
@@ -70,7 +70,7 @@
 	                        <p>C</p><span>
 	                        <input type="radio" name="answer"/>
 	                        </span>
-	                        <span style="display: none;"><input type="checkbox" name="answer"/></span>
+	                        <!-- <span style="display: none;"><input type="checkbox" name="answer"/></span> -->
 	                    </div>
 	                    <div class="Answerpart_right">
 	                    	<textarea name="choiceContent"></textarea>  
@@ -82,7 +82,7 @@
 	                        <p>D</p><span>
 	                        <input type="radio" name="answer"/>
 	                        </span>
-	                        <span style="display: none;"><input type="checkbox" name="answer"/></span>
+	                        <!-- <span style="display: none;"><input type="checkbox" name="answer"/></span> -->
 	                    </div>
 	                    <div class="Answerpart_right">
 	                    	<textarea name="choiceContent"></textarea>  
@@ -92,7 +92,7 @@
 	                <div class="clear"></div>
 	            </div>
 	        </div>
-	        <div class="Problem chapterAnswer">
+	        <div class="Problem chapterAnswer" style="display: none;">
 	            <div class="Attributetit">答案</div>
 	            <div class="Problemcontent">
 	            	<textarea name="answer"></textarea> 
@@ -121,78 +121,138 @@
 </div>
 <script type="text/javascript">
 	$(function(){
-		//huo qu ti mu xuan xiang
+		//获取题目选项
 		$.getJSON('exam/manager/getAllSubjectType',function(data){
 			data.forEach(function(item,index){
 				// console.log(item,index);
-				var newOpt = "";
-				if(item.id ==1){
-					newOpt = $('<option id='+item.id+' checked="checked" value="'+item.realName+'">'+item.realName+'</option>');
-				} else {
-					newOpt = $('<option id='+item.id+' value="'+item.realName+'">'+item.realName+'</option>');
-				}
+				var newOpt = newOpt = $('<option id='+item.id+' value="'+item.id+'">'+item.realName+'</option>');
 				$('select[name=type]').append(newOpt);
 			});
+			//获取题目难易程度
 			$.getJSON('exam/manager/getAllSubjectLevel',function(data){
 				data.forEach(function(item,index){
 				// console.log(item,index);
-				var newOpt = "";
-				if(item.id == 1){
-					newOpt = $('<option id='+item.id+' checked="checked" value="'+item.realName+'">'+item.realName+'</option>')
-				} else {
-					newOpt =$('<option id='+item.id+' value="'+item.realName+'">'+item.realName+'</option>');
-				}
+				var newOpt = newOpt =$('<option id='+item.id+' value="'+item.id+'">'+item.realName+'</option>');
 				$('select[name=department]').append(newOpt);
 				});
+				//获取题目方向
 				$.getJSON("exam/manager/getAllDepartmentes",function(data){
 					// console.log(data);
 					data.forEach(function(item,index){
-						var newOpt = "";
-						if(item.id == 1){
-							newOpt = $('<option id='+item.id+' checked="checked" value="'+item.name+'">'+item.name+'</option>');
-						} else {
-							newOpt = $('<option id='+item.id+' value="'+item.name+'">'+item.name+'</option>');
-						}
+						var newOpt = newOpt = $('<option id='+item.id+' value="'+item.id+'">'+item.name+'</option>');
 						$('select[name=level]').append(newOpt);
 					});
+					//获取知识点
 					$.getJSON('exam/manager/getAllTopics',function(data){
 						data.forEach(function(item,index){
-							var newOpt = "";
-							if(item.id == 1){
-								newOpt = $('<option id='+item.id+' checked="checked" value="'+item.title+'">'+item.title+'</option>');
-							} else {
-								newOpt = $('<option id='+item.id+' value="'+item.title+'">'+item.title+'</option>');
-							}
+							var newOpt = newOpt = $('<option id='+item.id+' value="'+item.id+'">'+item.title+'</option>');
 							$('select[name=topic]').append(newOpt);
 							// console.log(item,index);
 						})
 					});
+					
 				});
 			});
 		});
-		//shi yong shi jian dai li ,shi xia la cai dan xuan zhong
-		// var opts = $('select[name=type] option:checked');
-		$('select').off();
-		$('select').on('click','option',function(){
-			console.log(this.id);
-			// var opts = $('select[name=type] option:checked');
-			// var optTypes = $('select[name=type]').children();
-			var selectType = $('select[name=type]');
-			// console.log(optTypes);
-			// console.log(opts);
-			if(selectType){
-				if(this.id == 2){  
-					$('input[type=radio]').parent().hide().siblings('span').show();
-				}else{
-					$('input[type=checkbox]').parent().hide().siblings('span').show();
-				}
+		
+		//当选择题型时页面做出相应题型改变
+		$('select[name=type]').off();
+		$('select[name=type]').on('change',function(){
+			var type = $(this).val();
+			console.log(type);
+			if(type == 1){ 
+				// $('input[type=checkbox]').parent().hide().siblings('span').show();
+				// $('.chapterAnswer').hide().siblings('.Answeroptions').show(); 
+				$('.Answerpart_left input').attr('type','radio');
+				$('.Answeroptions').css('display','block');				
+			}else if(type == 2){
+				// $('input[type=radio]').parent().hide().siblings('span').show();
+				// $('.chapterAnswer').hide().siblings('.Answeroptions').show();
+				$('.Answerpart_left input').attr('type','checkbox');
+				$('.Answeroptions').css('display','block');
+			} else if(type == 3){
+				// $('.chapterAnswer').show().siblings('.Answeroptions').hide();
+				$('.Answeroptions').css('display','none');
+				$('.chapterAnswer').css('display','block');
 			}
+			// }
+		})
+		// console.log($('textarea[name=analysis]'));
+		//收集增加题目的信息
+		function addS(){
+			var typeId = $("select[name='type']").val();
+			var levelId = $("select[name='level']").val();
+			var departmentId = $("select[name='department']").val();	
+			var topicId = $("select[name='topic']").val();
+			var stem = $("textarea[name='stem']").val();
+			var answer;
+			var analysis = $('textarea[name="analysis"]').val();
+			if(typeId == 1 || typeId == 2){
+				answer = $("textarea[name='choiceContent']").map(function(index,item){
+					return $(item).val();
+				}).toArray();
+				// console.log(answer);
+				//将数组转换为字符串
+				result = answer.toString();
+			}else{
+				result = $("textarea[name='answer']").val();
+			}
+			$.getJSON('/exam/manager/addSubject?analysis='+analysis+'&answer='+result+'&stem='+stem+'&department_id='+departmentId+'&subjectLevel_id='+levelId+'&subjectType_id='+typeId+'&topic_id='+topicId+'',function(data){
+				//获取答案的choices
+				console.log(data);
+				var choice = [];
+				if(typeId == 1){
+					$(":radio[name='answer']").each(function(index,item){
+						choice[index] = +$(item).prop("checked");
+					});
+					content = answer;
+				}else if(typeId == 2){
+					$(":checkbox[name='answer']").each(function(index,item){
+						choice[index] = +$(item).prop("checked");
+					});
+					content = answer;				
+				}else{
+					choice[0] = 1;
+					content = result.split();
+				}
+				console.log(choice);
+				// console.log(content);
+				// var subjectId = data.id; 
+				// $.getJSON('exam/manage/addChoice?content='+content+'&correct='+choice+'&subject_id='+subjectId+'',function(data){
+				// 	console.log(data);
+				// });
+				$.getJSON("exam/manager/getAllSubjects?department_id="+departmentId+"&subjectLevel_id="+levelId+"&subjectType_id="+typeId+"&topic_id="+topicId,function(data){
+					var subjectId = data.id; 
+					$.post('exam/manager/addChoice',{
+						content:content,
+						correct:choice,
+						subjectId:subjectId
+					},function(data){
+						console.log(data);
+					});
+				});	
+			});
+		}
+		//阻止表单默认提交事件
+		// $("form[name='subjectAddForm']").submit(function(){
+		// 	return false;   //阻止默认事件
+		// });
+		//点击保存继续
+		$('.saveContinue').off();
+		$('.saveContinue').on('click',function(){
+			addS();
+			$('.right').load('load/addSubject.html');
+			
 		});
-
-		//close the page
+		//点击保存关闭
+		$('.saveClose').off();
+		$('.saveClose').on('click',function(){
+			addS();
+			$(".deletetitle").trigger('click');
+		});
+		//点击关闭符号
 		$('.deletetitle').on('click',function(){
 			$(".right").load("load/showSubjectType.html");
-			// console.log(this);
 		});
 	})
 </script>
